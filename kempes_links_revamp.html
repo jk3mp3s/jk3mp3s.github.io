@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kempes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --card:#111;
+  --border:#222;
+  --text:#f5f5f5;
+  --muted:#888;
+  --y:#FFE000;
+  --r:#FF2D2D;
+  --b:#00C2FF;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  overflow-x:hidden;
+}
+.wrap{
+  width:100%;
+  max-width:440px;
+  position:relative;
+}
+.noise{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+  z-index:0;
+}
+.ticker{
+  background:var(--y);
+  color:#000;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:13px;
+  letter-spacing:.12em;
+  padding:7px 0;
+  overflow:hidden;
+  position:relative;
+  margin-bottom:28px;
+  border-radius:4px;
+  animation:fadeUp .4s ease both;
+}
+.ticker-inner{
+  display:flex;
+  gap:48px;
+  white-space:nowrap;
+  animation:scroll 18s linear infinite;
+}
+.ticker-inner span{display:inline-block}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-bottom:28px;
+  animation:fadeUp .5s .1s ease both;
+}
+.avatar-wrap{
+  position:relative;
+  flex-shrink:0;
+}
+.avatar{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  border:3px solid var(--y);
+}
+.badge{
+  position:absolute;
+  bottom:-4px;
+  right:-4px;
+  background:var(--r);
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.08em;
+  padding:3px 7px;
+  border-radius:20px;
+  border:2px solid var(--bg);
+}
+.name-block h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3rem;
+  line-height:.95;
+  letter-spacing:.02em;
+  color:var(--text);
+}
+.name-block h1 span{color:var(--y)}
+.name-block p{
+  color:var(--muted);
+  font-size:.85rem;
+  margin-top:8px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.section-label{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:11px;
+  letter-spacing:.25em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:10px;
+  padding-left:2px;
+}
+
+.links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+  animation:fadeUp .5s .2s ease both;
+}
+.link-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  text-decoration:none;
+  color:var(--text);
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:16px 20px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:.97rem;
+  letter-spacing:.03em;
+  transition:all .18s ease;
+  position:relative;
+  overflow:hidden;
+}
+.link-btn::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  border-radius:2px 0 0 2px;
+}
+.link-btn.ig::before{background:linear-gradient(#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.link-btn.tt::before{background:#00f2ea}
+.link-btn.yt::before{background:#FF0000}
+.link-btn.cameo::before {
+  background: linear-gradient(180deg, #00e5ff, #ff2d7a, #bf5af2);
+}
+
+.cameo-icon {
+  background: #000;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.link-btn:hover{
+  transform:translateX(4px);
+  border-color:#444;
+  background:#1a1a1a;
+}
+.link-btn .icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  flex-shrink:0;
+}
+.link-btn.ig .icon{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.link-btn.tt .icon{background:#000;color:#00f2ea;font-weight:900}
+.link-btn.yt .icon{background:#FF0000}
+.link-info{display:flex;align-items:center;gap:12px}
+.link-meta{text-align:left}
+.link-name{font-size:.95rem;font-weight:700}
+.link-handle{font-size:.75rem;color:var(--muted);font-weight:400;margin-top:1px}
+.arrow{color:var(--muted);font-size:1.1rem;transition:transform .18s}
+.link-btn:hover .arrow{transform:translateX(3px);color:var(--text)}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:24px;
+  animation:fadeUp .5s .3s ease both;
+}
+.stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 12px;
+  text-align:center;
+}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;
+  line-height:1;
+  color:var(--y);
+}
+.stat-label{
+  font-size:.7rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-top:3px;
+}
+
+.projects-section{
+  animation:fadeUp .5s .4s ease both;
+}
+.projects{display:flex;flex-direction:column;gap:10px}
+.project-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 20px;
+  transition:all .18s ease;
+  cursor:default;
+}
+.project-card:hover{border-color:#444;transform:translateY(-2px)}
+.project-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.project-tag{
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:20px;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.tag-ai{background:rgba(0,194,255,.12);color:var(--b);border:1px solid rgba(0,194,255,.25)}
+.tag-visual{background:rgba(255,224,0,.1);color:var(--y);border:1px solid rgba(255,224,0,.2)}
+.tag-game{background:rgba(255,45,45,.1);color:var(--r);border:1px solid rgba(255,45,45,.2)}
+.project-name{
+  font-weight:700;
+  font-size:.95rem;
+  margin-bottom:5px;
+}
+.project-desc{
+  font-size:.8rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+.project-status{
+  font-size:.7rem;
+  color:var(--muted);
+  margin-top:10px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#3ddc84;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.footer{
+  text-align:center;
+  margin-top:24px;
+  font-size:.75rem;
+  color:#444;
+  letter-spacing:.05em;
+  animation:fadeUp .5s .5s ease both;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="wrap">
+
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>KEMPES &bull;</span><span>CREATOR &bull;</span><span>BUILDER &bull;</span><span>STUDENT &bull;</span><span>KEMPES &bull;</span><span>CREATOR &bull;</span><span>BUILDER &bull;</span><span>STUDENT &bull;</span><span>KEMPES &bull;</span><span>CREATOR &bull;</span><span>BUILDER &bull;</span><span>STUDENT &bull;</span><span>KEMPES &bull;</span><span>CREATOR &bull;</span><span>BUILDER &bull;</span><span>STUDENT &bull;</span>
+    </div>
+  </div>
+
+  <div class="profile">
+    <div class="avatar-wrap">
+      <img class="avatar" src="https://raw.githubusercontent.com/jk3mp3s/photo/main/IMG_4098.jpeg" alt="Kempes"/>
+      <div class="badge">LIVE</div>
+    </div>
+    <div class="name-block">
+      <h1>KEMPES<br/><span>ON</span><br/><span>CAMPUS</span></h1>
+      <p>Student &bull; Creator &bull; Builder</p>
+    </div>
+  </div>
+
+  <div class="section-label">Socials</div>
+  <div class="links">
+    <a class="link-btn ig" href="https://instagram.com/itsjustkempes" target="_blank" rel="noopener">
+      <div class="link-info">
+        <div class="icon">📸</div>
+        <div class="link-meta">
+          <div class="link-name">Instagram</div>
+          <div class="link-handle">@itsjustkempes</div>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link-btn tt" href="https://tiktok.com/@itsjustkempes" target="_blank" rel="noopener">
+      <div class="link-info">
+        <div class="icon" style="font-size:13px;font-weight:900;color:#00f2ea">TT</div>
+        <div class="link-meta">
+          <div class="link-name">TikTok</div>
+          <div class="link-handle">@itsjustkempes</div>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link-btn yt" href="https://www.youtube.com/@KempesPandey" target="_blank" rel="noopener">
+      <div class="link-info">
+        <div class="icon">▶</div>
+        <div class="link-meta">
+          <div class="link-name">YouTube</div>
+          <div class="link-handle">@itsjustkempes</div>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link-btn cameo" href="https://www.cameo.com/itsjustkempes" target="_blank" rel="noopener">
+      <div class="link-info">
+        <div class="icon cameo-icon">
+          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- cyan left -->
+            <path d="M18,38 Q22,28 30,24 L38,42 Q32,44 28,50 Z" fill="#00E5FF"/>
+            <!-- pink top -->
+            <path d="M38,18 Q48,14 58,18 L54,36 Q50,34 46,36 Z" fill="#FF2D7A"/>
+            <!-- purple top-right -->
+            <path d="M62,24 Q70,28 74,38 L56,44 Q54,40 50,38 Z" fill="#BF5AF2"/>
+            <!-- pink right -->
+            <path d="M76,50 Q76,60 70,68 L54,58 Q56,54 56,50 Z" fill="#FF2D7A"/>
+            <!-- purple bottom-right -->
+            <path d="M62,74 Q54,80 44,78 L46,60 Q50,62 54,60 Z" fill="#BF5AF2"/>
+            <!-- cyan bottom -->
+            <path d="M38,80 Q28,74 26,62 L44,58 Q46,62 50,62 Z" fill="#00E5FF"/>
+            <!-- pink bottom-left -->
+            <path d="M22,56 Q18,46 22,38 L38,46 Q36,50 38,54 Z" fill="#FF2D7A"/>
+            <!-- purple top-left -->
+            <path d="M30,24 Q38,18 46,20 L44,38 Q40,38 38,42 Z" fill="#BF5AF2"/>
+          </svg>
+        </div>
+        <div class="link-meta">
+          <div class="link-name">Cameo</div>
+          <div class="link-handle">@itsjustkempes</div>
+        </div>
+      </div>
+    <span class="arrow">→</span>
+  </a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat" id="dino-stat" onclick="openDino()" style="cursor:pointer">
+      <div class="stat-num">▶</div>
+      <div class="stat-label">Play</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Days Off</div>
+    </div>
+  </div>
+
+  <!-- Dino Game Modal -->
+  <div id="dino-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;flex-direction:column">
+    <div style="background:#111;border:1px solid #333;border-radius:16px;padding:24px;text-align:center;width:90%;max-width:480px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#9B30FF">DINO RUN</span>
+        <button onclick="closeDino()" style="background:none;border:none;color:#888;font-size:1.4rem;cursor:pointer">✕</button>
+      </div>
+      <canvas id="dino-canvas" width="440" height="150" style="background:#1a1a1a;border-radius:8px;width:100%"></canvas>
+      <div style="margin-top:12px;font-size:.75rem;color:#666;letter-spacing:.08em;text-transform:uppercase">Space / Tap to jump</div>
+      <div style="margin-top:6px;font-size:.8rem;color:#9B30FF;font-weight:700" id="dino-score">Score: 0</div>
+    </div>
+  </div>
+
+  <div class="projects-section">
+    <div class="section-label">Projects</div>
+    <div class="projects">
+      <div class="project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-name">AI Roast Generator</div>
+            <div class="project-desc">Drop a description, get absolutely cooked by AI. Brutally funny, dangerously shareable.</div>
+          </div>
+          <span class="project-tag tag-ai">AI</span>
+        </div>
+        <div class="project-status"><div class="dot"></div> Coming soon</div>
+      </div>
+      <div class="project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-name">Color Palette Thief</div>
+            <div class="project-desc">Upload any image. Steal its entire color palette in one click.</div>
+          </div>
+          <span class="project-tag tag-visual">Visual</span>
+        </div>
+        <div class="project-status"><div class="dot"></div> Coming soon</div>
+      </div>
+      <div class="project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-name">Reaction Time Game</div>
+            <div class="project-desc">Test your reflexes. Track your best times. Flex on your friends.</div>
+          </div>
+          <span class="project-tag tag-game">Game</span>
+        </div>
+        <div class="project-status"><div class="dot"></div> Coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">© 2026 Kempes Pandey &bull; All rights reserved</div>
+</div>
+</body>
+<script>
+const modal = document.getElementById('dino-modal');
+const canvas = document.getElementById('dino-canvas');
+const scoreEl = document.getElementById('dino-score');
+const ctx = canvas.getContext('2d');
+
+let dino, obstacles, score, speed, raf, running = false;
+
+function initGame() {
+  dino = { x: 50, y: 110, w: 20, h: 30, vy: 0, onGround: true };
+  obstacles = [];
+  score = 0;
+  speed = 4;
+  running = true;
+  if (raf) cancelAnimationFrame(raf);
+  loop();
+}
+
+function jump() {
+  if (dino.onGround) { dino.vy = -12; dino.onGround = false; }
+}
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // ground
+  ctx.fillStyle = '#333';
+  ctx.fillRect(0, 140, canvas.width, 2);
+
+  // dino
+  function drawDino(x, y) {
+  ctx.fillStyle = '#9B30FF';
+  // body
+  ctx.fillRect(x, y + 8, 20, 18);
+  // head
+  ctx.fillRect(x + 10, y, 14, 12);
+  // eye
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x + 20, y + 2, 3, 3);
+  // tail
+  ctx.fillStyle = '#9B30FF';
+  ctx.fillRect(x - 8, y + 16, 10, 6);
+  // legs (alternate based on score for walking effect)
+  const step = Math.floor(score / 6) % 2;
+  ctx.fillRect(x + 2, y + 24, 5, step === 0 ? 8 : 5);
+  ctx.fillRect(x + 10, y + 24, 5, step === 0 ? 5 : 8);
+}
+drawDino(dino.x, dino.y);
+
+  // physics
+  dino.vy += 0.7;
+  dino.y += dino.vy;
+  if (dino.y >= 110) { dino.y = 110; dino.vy = 0; dino.onGround = true; }
+
+  // obstacles
+  if (Math.random() < 0.015) {
+    obstacles.push({ x: canvas.width, y: 110, w: 16, h: 30 });
+  }
+  obstacles.forEach(o => { o.x -= speed; });
+  obstacles = obstacles.filter(o => o.x + o.w > 0);
+
+  ctx.fillStyle = '#FF2D2D';
+  obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
+
+  // collision
+  for (let o of obstacles) {
+    if (dino.x < o.x + o.w && dino.x + dino.w > o.x &&
+        dino.y < o.y + o.h && dino.y + dino.h > o.y) {
+      running = false;
+      scoreEl.textContent = `Game over! Score: ${score} — Space to restart`;
+      return;
+    }
+  }
+
+  score++;
+  speed = 4 + score / 300;
+  scoreEl.textContent = `Score: ${score}`;
+  raf = requestAnimationFrame(loop);
+}
+
+function openDino() {
+  modal.style.display = 'flex';
+  initGame();
+}
+function closeDino() {
+  modal.style.display = 'none';
+  running = false;
+  if (raf) cancelAnimationFrame(raf);
+}
+
+document.addEventListener('keydown', e => {
+  if (modal.style.display === 'flex') {
+    if (e.code === 'Space') { e.preventDefault(); running ? jump() : initGame(); }
+    if (e.code === 'Escape') closeDino();
+  }
+});
+canvas.addEventListener('click', () => running ? jump() : initGame());
+</script>
+</html>
